@@ -1,0 +1,85 @@
+INSERT INTO `services` (`name`, `description`, `is_active`, `created_at`, `updated_at`) 
+VALUES (
+  'NIN', 
+  'National Identification Number services including Validation', 
+  1, 
+  NOW(), 
+  NOW()
+);
+
+
+INSERT INTO `modification_fields` (
+  `service_id`, 
+  `field_name`, 
+  `field_code`, 
+  `description`, 
+  `base_price`, 
+  `is_active`, 
+  `created_at`, 
+  `updated_at`
+) 
+VALUES (
+  (SELECT id FROM services WHERE name = 'NIN'), 
+  'Name Correction', 
+  'NIN_NAME_CORRECTION', 
+  'Correction of first, middle or last name on NIN record', 
+  1000.00, 
+  1, 
+  NOW(), 
+  NOW()
+);
+
+
+-- Price for regular users
+INSERT INTO `service_prices` (
+  `service_id`, 
+  `modification_field_id`, 
+  `user_type`, 
+  `price`, 
+  `created_at`, 
+  `updated_at`
+) 
+VALUES (
+  (SELECT id FROM services WHERE name = 'NIN'),
+  (SELECT id FROM modification_fields WHERE field_code = 'NIN_NAME_CORRECTION'),
+  'user',
+  1000.00,
+  NOW(),
+  NOW()
+);
+
+-- Price for agents
+INSERT INTO `service_prices` (
+  `service_id`, 
+  `modification_field_id`, 
+  `user_type`, 
+  `price`, 
+  `created_at`, 
+  `updated_at`
+) 
+VALUES (
+  (SELECT id FROM services WHERE name = 'NIN'),
+  (SELECT id FROM modification_fields WHERE field_code = 'NIN_NAME_CORRECTION'),
+  'agent',
+  900.00,
+  NOW(),
+  NOW()
+);
+
+-- Price for admins
+INSERT INTO `service_prices` (
+  `service_id`, 
+  `modification_field_id`, 
+  `user_type`, 
+  `price`, 
+  `created_at`, 
+  `updated_at`
+) 
+VALUES (
+  (SELECT id FROM services WHERE name = 'NIN'),
+  (SELECT id FROM modification_fields WHERE field_code = 'NIN_NAME_CORRECTION'),
+  'admin',
+  800.00,
+  NOW(),
+  NOW()
+);
