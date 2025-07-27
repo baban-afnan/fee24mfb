@@ -16,6 +16,7 @@ use App\Http\Controllers\BvnUserController;
 use App\Http\Controllers\BvnModificationController;
 use App\Http\Controllers\PhoneSearchController;
 use App\Http\Controllers\NinipeController;
+use App\Http\Controllers\PaymentWebhookController;
 
 
 
@@ -28,6 +29,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+    Route::post('/palmpay/webhook', [PaymentWebhookController::class, 'handleWebhook']);
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
