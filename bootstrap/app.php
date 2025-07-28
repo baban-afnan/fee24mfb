@@ -11,12 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-          
-    })
-    ->$middleware->validateCsrfTokens(except: [
+           $middleware->validateCsrfTokens(except: [
             '/palmpay/webhook',
-            
-    ])
+           ]);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
