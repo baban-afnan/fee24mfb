@@ -20,6 +20,8 @@ class PaymentWebhookController extends Controller
 
     public function handlePalmPay(Request $request)
     {
+        Log::info('Webhook path received: ' . request()->path());
+
 
         $payload = $request->all();
 
