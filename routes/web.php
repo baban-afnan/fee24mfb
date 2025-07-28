@@ -25,7 +25,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/palmpay/webhook', [PaymentWebhookController::class, 'handlePalmPay']);
+Route::get('/palmpay/webhook', [PaymentWebhookController::class, 'handleWebhook']);
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
