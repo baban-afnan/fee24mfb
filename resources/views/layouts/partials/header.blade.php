@@ -84,29 +84,9 @@
 
 
 <style>
-
-  /* Base Styles */
+/* Base Styles */
 .icon-main {
     padding: 20px 0;
-}
-
-.card-header h3 {
-    color: #2c3e50;
-    font-weight: 700;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-    position: relative;
-    padding-bottom: 15px;
-}
-
-.card-header h3::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #3498db, #9b59b6);
-    border-radius: 3px;
 }
 
 .icon-lists {
@@ -117,6 +97,7 @@
 }
 
 .icons-item {
+    width: calc(50% - 20px); /* Two per row */
     perspective: 1000px;
     transition: all 0.3s ease;
 }
@@ -124,7 +105,6 @@
 .icons-item a {
     display: block;
     padding: 25px 15px;
-    background: white;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -142,7 +122,6 @@
     left: 0;
     width: 100%;
     height: 5px;
-    background: linear-gradient(90deg, #3498db, #9b59b6);
     transition: all 0.3s ease;
 }
 
@@ -197,7 +176,6 @@
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: #3498db;
     transition: all 0.3s ease;
 }
 
@@ -216,50 +194,64 @@
     100% { transform: translateY(-10px) scale(1.03); }
 }
 
-/* Responsive Styles */
-@media (max-width: 1199.98px) {
-    .icons-item {
-        flex: 0 0 calc(25% - 20px);
-    }
-}
-
-@media (max-width: 991.98px) {
-    .icons-item {
-        flex: 0 0 calc(33.333% - 20px);
-    }
-    
-    .icons-item a {
-        padding: 20px 10px;
-    }
-}
-
+/* Responsive Design */
 @media (max-width: 767.98px) {
     .icons-item {
-        flex: 0 0 calc(50% - 20px);
+        width: calc(50% - 20px); /* Two items per row */
     }
     
     .card-header h3 {
         font-size: 1.5rem;
     }
-    
+
     .icons-item h5 {
         font-size: 1rem;
+    }
+
+    /* Sidebar behavior */
+    .sidebar {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100%;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        z-index: 1100;
+        border-radius: 4px;
     }
 }
 
 @media (max-width: 575.98px) {
     .icons-item {
-        flex: 0 0 calc(100% - 20px);
+        width: 100%; /* Stack items */
     }
-    
+
     .icon-lists {
         gap: 15px;
     }
-    
+
     .icons-item a {
         padding: 25px 15px;
     }
-    
+
     .icons-item a:hover {
         transform: translateY(-5px) scale(1.02);
     }
@@ -284,5 +276,209 @@
 .icons-item:nth-child(even) a:hover {
     background: linear-gradient(135deg, #ffffff, #f9f9f9);
 }
+</style>
 
+<style>
+.icon-main {
+    padding: 20px 0;
+}
+
+.icon-lists {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.icons-item {
+    width: calc(50% - 20px);
+    perspective: 1000px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.icons-item a {
+    display: block;
+    padding: 25px 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #34495e;
+    text-decoration: none !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ripple Effect on Click */
+.icons-item a::after {
+    content: "";
+    position: absolute;
+    background: rgba(52, 152, 219, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: transform 0.5s ease-out, opacity 0.8s ease-out;
+}
+
+.icons-item a:active::after {
+    transform: scale(3);
+    opacity: 1;
+    transition: 0s;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+
+/* Hover Glow and Bounce */
+.icons-item a:hover {
+    transform: translateY(-10px) scale(1.03) rotate(-1deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+.icons-item a:hover::before {
+    height: 10px;
+}
+
+.icons-item a:hover img {
+    transform: scale(1.08) rotate(3deg);
+    filter: grayscale(0%);
+}
+
+.icons-item img {
+    transition: all 0.3s ease;
+    filter: grayscale(30%);
+    max-width: 60px;
+}
+
+.icons-item i {
+    color: #3498db;
+    transition: all 0.3s ease;
+    font-size: 1.8rem;
+}
+
+.icons-item a:hover i {
+    color: #9b59b6;
+    transform: translateY(-5px);
+}
+
+.icons-item h5 {
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    margin-top: 10px;
+}
+
+.icons-item a:hover h5 {
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+}
+
+.icons-item h5::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #3498db;
+    transition: all 0.3s ease;
+}
+
+.icons-item a:hover h5::after {
+    width: 40px;
+}
+
+/* Gradient Highlights */
+.icons-item a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    transition: height 0.3s ease;
+    z-index: 2;
+}
+
+.icons-item:nth-child(odd) a:hover {
+    background: linear-gradient(135deg, #fefefe, #f9f9f9);
+}
+
+.icons-item:nth-child(even) a:hover {
+    background: linear-gradient(135deg, #ffffff, #fafafa);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .icons-item {
+        width: calc(50% - 20px);
+    }
+
+    .card-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .icons-item h5 {
+        font-size: 1rem;
+    }
+
+    /* Sidebar toggle setup */
+    .sidebar {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: #3498db;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        z-index: 1100;
+        border-radius: 4px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .icons-item {
+        width: 100%;
+    }
+
+    .icon-lists {
+        gap: 15px;
+    }
+
+    .icons-item a {
+        padding: 25px 15px;
+    }
+
+    .icons-item a:hover {
+        transform: translateY(-5px) scale(1.02);
+    }
+}
 </style>
