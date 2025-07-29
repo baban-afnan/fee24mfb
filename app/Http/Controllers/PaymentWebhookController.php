@@ -99,19 +99,22 @@ class PaymentWebhookController extends Controller
     {
 
         Transaction::insert([
-            'user_id' => $userId,
-            'payer_name' => $payerAccountName,
-            //'payer_email' => auth()->user()->email,
-            //'payer_phone' => auth()->user()->phone_number,
-            'referenceId' => $orderNo,
-            'service_type' => 'Wallet Topup',
-            'service_description' => $service_description,
-            'amount' => $amountPaid,
-            'gateway' => $payerBankName,
-            'status' => 'Approved',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
+           'transaction_ref' => $orderNo, 
+    'user_id' => $userId,
+    'performed_by' => null, 
+    'amount' => $amountPaid,
+    'fee' => 0.00,
+    'net_amount' => $amountPaid,
+    'description' => $service_description ?? 'Wallet Topup',
+    'type' => 'credit',
+    'status' => 'completed',
+    'metadata' => json_encode([
+        'payer_name' => $payerAccountName,
+        'gateway' => $payerBankName,
+    ]),
+    'created_at' => Carbon::now(),
+    'updated_at' => Carbon::now(),
+]);
     }
 
     private function createTransactionForReservedAccount($userId, $orderNo, $amountPaid, $payerBankName, $payerAccountName, $service_description, $orderStatus)
