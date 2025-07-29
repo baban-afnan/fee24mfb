@@ -11,6 +11,8 @@ use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class PaymentWebhookController extends Controller
 {
@@ -18,8 +20,6 @@ class PaymentWebhookController extends Controller
 
     public function handleWebhook(Request $request)
     {
-        Log::info('Webhook path received: ' . request()->path());
-
 
         $payload = $request->all();
 
@@ -99,22 +99,18 @@ class PaymentWebhookController extends Controller
     {
 
         Transaction::insert([
-           'transaction_ref' => $orderNo, 
-    'user_id' => $userId,
-    'performed_by' => null, 
-    'amount' => $amountPaid,
-    'fee' => 0.00,
-    'net_amount' => $amountPaid,
-    'description' => $service_description ?? 'Wallet Topup',
-    'type' => 'credit',
-    'status' => 'completed',
-    'metadata' => json_encode([
-        'payer_name' => $payerAccountName,
-        'gateway' => $payerBankName,
-    ]),
-    'created_at' => Carbon::now(),
-    'updated_at' => Carbon::now(),
-]);
+            'user_id' => $userId,
+            'payer_name' => $payerAccountName,
+            //'payer_email' => auth()->user()->email,
+            //'payer_phone' => auth()->user()->phone_number,
+            'transaction_ref' => $orderNo,
+            'type' => 'Credit',
+            'description' => $service_description,
+            'amount' => $amountPaid,
+            'status' => 'completed',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
     }
 
     private function createTransactionForReservedAccount($userId, $orderNo, $amountPaid, $payerBankName, $payerAccountName, $service_description, $orderStatus)
@@ -137,7 +133,7 @@ class PaymentWebhookController extends Controller
         $wallet = Wallet::where('user_id', $userId)->first();
         if ($wallet) {
             $wallet->update([
-                'balance' => $wallet->balance + $amountPaid,
+                'wallet_balance' => $wallet->balance + $amountPaid,
                 'deposit' => $wallet->deposit + $amountPaid,
             ]);
         } else {
