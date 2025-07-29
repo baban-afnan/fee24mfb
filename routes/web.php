@@ -31,7 +31,7 @@ Route::post('/palmpay/webhook', [PaymentWebhookController::class, 'handleWebhook
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-   
+
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/wallet', [WalletController::class, 'index'])->name('wallet');
 
     Route::post('/virtual/account/create', [WalletController::class, 'createWallet'])->name('virtual.account.create');
-    
+
     // BVN Services Route (only controller, remove duplicated closure route)
     Route::get('/bvn-services', [ServiceController::class, 'bvnServices'])->name('bvn.services');
 
@@ -94,7 +94,7 @@ Route::middleware('auth')->group(function () {
       Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
      });
 
-        
+
 });
 
      Route::middleware(['auth'])->group(function () {
@@ -128,7 +128,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/manual-search', [ManualSearchController::class, 'store'])->name('manual-search.store');
 
 });
-  
+
 
 
 
