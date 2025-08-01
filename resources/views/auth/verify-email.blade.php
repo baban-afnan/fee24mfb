@@ -65,7 +65,7 @@
                                         Resend Verification Email
                                     </button>
                                 </form>
-
+                               </div>
                                 <!-- Logout -->
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf

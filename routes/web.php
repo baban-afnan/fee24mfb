@@ -17,24 +17,25 @@ use App\Http\Controllers\BvnModificationController;
 use App\Http\Controllers\PhoneSearchController;
 use App\Http\Controllers\NinipeController;
 use App\Http\Controllers\PaymentWebhookController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\NINverificationController;
 
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+   Route::get('/', function () { return view('welcome');
+     });
 
-Route::post('/palmpay/webhook', [PaymentWebhookController::class, 'handleWebhook']);
+    Route::post('/palmpay/webhook', [PaymentWebhookController::class, 'handleWebhook']);
 
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 
-// Authenticated Routes
-Route::middleware('auth')->group(function () {
+    // Authenticated Routes
+    Route::middleware('auth')->group(function () {
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
 
     // BVN Services Route (only controller, remove duplicated closure route)
     Route::get('/bvn-services', [ServiceController::class, 'bvnServices'])->name('bvn.services');
+
+    // NIN Verification Route (only controller, remove duplicated closure route)
+    Route::get('/verification-services', [VerificationController::class, 'verificationServices']) ->name('verification.services');
+
 
       // NIN Services Route (only controller, remove duplicated closure route)
     Route::get('/nin-services', [NinServiceController::class, 'ninServices'])->name('nin.services');
@@ -121,13 +126,21 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
     Route::get('/phone-search', [PhoneSearchController::class, 'index'])->name('phone.search.index');
     Route::post('/phone-search', [PhoneSearchController::class, 'store'])->name('phone.search.store');
     Route::post('/phone-search/{id}/status', [PhoneSearchController::class, 'updateStatus'])->name('phone.search.status');
-        Route::post('/manual-search', [ManualSearchController::class, 'store'])->name('manual-search.store');
+    Route::post('/manual-search', [ManualSearchController::class, 'store'])->name('manual-search.store');
 
-});
+  });
+
+
+   Route::middleware(['auth'])->group(function () {
+    Route::get('/nin-verification', [NINverificationController::class, 'index'])->name('nin.verification.index');
+    Route::post('/nin-verification', [NINverificationController::class, 'store'])->name('nin.verification.store');
+    Route::post('/nin-verification/{id}/status', [NINverificationController::class, 'updateStatus'])->name('nin.verification.status');
+
+  });
 
 
 

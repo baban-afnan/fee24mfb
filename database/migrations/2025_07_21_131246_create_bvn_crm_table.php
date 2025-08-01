@@ -17,7 +17,7 @@ return new class extends Migration {
     $table->string('batch_id', 7);
     $table->foreignId('transaction_id')->constrained();
     $table->dateTime('submission_date');
-    $table->enum('status', ['pending', 'processing', 'resolved', 'rejected'])->default('pending');
+    $table->enum('status', ['pending', 'processing', 'resolved', 'rejected', 'query', 'remark'])->default('pending');
     $table->text('comment')->nullable();
     $table->timestamps();
           });

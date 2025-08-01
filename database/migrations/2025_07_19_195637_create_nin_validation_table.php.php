@@ -16,7 +16,7 @@ return new class extends Migration {
           $table->string('nin', 11);
           $table->foreignId('transaction_id')->constrained();
           $table->dateTime('submission_date');
-           $table->enum('status', ['pending', 'processing', 'resolved'])->default('pending');
+          $table->enum('status', ['pending', 'processing', 'resolved', 'rejected', 'query', 'remark'])->default('pending');
           $table->text('comment')->nullable();
           $table->timestamps();
 });

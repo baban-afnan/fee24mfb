@@ -51,8 +51,8 @@
                             <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>
-                                    <th>Amount</th>
                                     <th>Transaction Ref</th>
+                                    <th>Amount</th>
                                     <th>Description</th>
                                     <th>Type</th>
                                     <th>Status</th>
@@ -63,11 +63,11 @@
                                 @forelse ($transactions as $txn)
                                     <tr>
                                         <td>{{ $txn->id }}</td>
-                                        <td>₦{{ number_format($txn->amount, 2) }}</td>
                                         <td>{{ $txn->transaction_ref }}</td>
+                                         <td>₦{{ number_format($txn->amount, 2) }}</td>
                                         <td>{{ $txn->description }}</td>
                                         <td>
-                                            <span class="badge bg-{{ $txn->type === 'credit' ? 'success' : 'danger' }}">
+                                            <span class="badge bg-{{ $txn->type === 'credit' ? 'success' : ($txn->type === 'refund' ? 'primary' : 'danger') }}">
                                                 {{ ucfirst($txn->type) }}
                                             </span>
                                         </td>

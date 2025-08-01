@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
          Schema::create('transactions', function (Blueprint $table) {
-            $table->id(); // id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+            $table->id();
             $table->string('transaction_ref', 100);
             $table->string('payer_name')->nullable();
             $table->string('referenceId')->nullable();
@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->decimal('net_amount', 10, 2)->default(0.00);
             $table->string('description')->nullable();
             $table->enum('type', ['credit', 'debit']);
-            $table->enum('status', ['pending', 'completed', 'failed', 'reversed'])->default('pending');
-            $table->json('metadata')->nullable(); // JSON with validation
+            $table->enum('status', ['pending', 'completed', 'failed', 'reversed', 'rejected', 'query'])->default('pending');
+            $table->json('metadata')->nullable(); 
             $table->timestamps();
             
             // Indexes for better performance

@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Wallet;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -21,7 +22,7 @@ class User extends Authenticatable
         'nin',
         'address',
         'photo',
-        'profile_photo_url', // this stores the full path like "profile_photos/abc.jpg"
+        'profile_photo_url', 
     ];
 
     protected $hidden = [
