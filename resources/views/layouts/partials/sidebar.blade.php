@@ -55,7 +55,7 @@
         </a>
       </li>
       <li class="sidebar-list">
-        <a class="sidebar-link" href="enrolment-report.php">
+        <a class="sidebar-link" href="{{ route('verification.services') }}">
           <i class="fas fa-file-alt fa-lg sidebar-icon"></i>
           <h6 class="sidebar-text f-w-600">Verifications</h6>
         </a>
