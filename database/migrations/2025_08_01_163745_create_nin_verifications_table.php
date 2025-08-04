@@ -35,10 +35,10 @@ class CreateNinVerificationsTable extends Migration
             $table->string('profession')->nullable();
             $table->string('heigth')->nullable();
             $table->string('title')->nullable();
-            $table->string('nin')->unique();
+            $table->string('number_nin')->nullable();
             $table->string('vnin')->nullable();
-            $table->string('photo_path')->nullable(); // store decoded image path
-            $table->string('signature_path')->nullable(); // optional if you store signature image
+            $table->longText('photo_path')->nullable();
+            $table->longText('signature_path')->nullable();
             $table->string('trackingId')->nullable();
             $table->string('userid')->nullable();
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class NinModification extends Model
 {
-    protected $table = 'nin_modification';
+    protected $table = 'nin_modifications';
 
     protected $fillable = [
         'reference',
