@@ -31,14 +31,13 @@
 
     <div class="container-fluid p-0 vh-100 d-flex justify-content-center align-items-center">
         <div class="login-card login-dark shadow-lg rounded-3 p-4">
-            <div class="text-center mb-4">
-                <img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo" class="img-fluid" style="max-width: 80px;">
-                <h4 class="mt-3">Verify Your Email</h4>
-            </div>
+           
 
             <div class="login-main">
-                <div class="text-muted text-center mb-4">
-                    <i class="bi bi-envelope-paper-heart fs-1 text-primary"></i>
+                <div class="text-center mb-4">
+                <img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo" class="img-fluid" style="max-width: 50px;">
+                <h4 class="mt-3">Verify Your Email</h4>
+         
                     <p class="mt-2">
                         Thanks for signing up! We’ve sent a verification link to your email address.
                         Please check your inbox and click the link to activate your account.
