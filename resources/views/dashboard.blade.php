@@ -88,7 +88,7 @@
 
 
                         <div class="col-10 col-xxl-2 col-lg-4 col-md-6 icons-item">
-                        <a href="#" class="d-block text-center text-decoration-none">
+                        <a href="{{route('support')}}" class="d-block text-center text-decoration-none">
                           <img src="../assets/images/apps/support.png" alt="Arrow Up Service" class="mb-2" style="width:40px;height:40px;object-fit:contain;">
                           <h5 class="mt-0">Support</h5>
                         </a>
@@ -99,6 +99,8 @@
            </div>
          </div>
       </div>
+
+      @include('forms.notification')
         
 
        

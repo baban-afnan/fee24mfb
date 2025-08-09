@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bvn_user', function (Blueprint $table) {
+        Schema::create('bvn_user1', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
             $table->foreignId('user_id')->constrained();

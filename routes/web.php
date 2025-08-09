@@ -143,6 +143,17 @@ Route::middleware(['auth'])->group(function () {
   });
 
 
+   //Whatsapp API Support Routes--------------------------------------------------------------------------
+    Route::get('/support', function () {
+        $phoneNumber = env('phoneNumber');
+        $message = urlencode(env('message'));
+        $url = env('API_URL') . "{$phoneNumber}&text={$message}";
+        return redirect($url);
+    })->name('support');
+    //End Whatsapp API Support Routes ------------------------------------------------------------------------------------------
+
+
+
 
 
 

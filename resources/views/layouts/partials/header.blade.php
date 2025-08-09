@@ -1,7 +1,7 @@
 <header class="page-header row">
   <div class="logo-wrapper d-flex align-items-center col-auto">
-    <img class="light-logo img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="logo" style="max-width: 30px; height: auto;"/>
-    <img class="dark-logo img-fluid" src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" style="max-width: 30px; height: auto;"/>
+    <img class="light-logo img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="logo" style="max-width: 30px; height: auto;" />
+    <img class="dark-logo img-fluid" src="{{ asset('assets/images/logo/logo-dark.png') }}" alt="logo" style="max-width: 30px; height: auto;" />
     <a class="lose-btn toggle-sidebar" href="javascript:void(0)">
       <i class="fas fa-times"></i>
     </a>
@@ -36,9 +36,12 @@
           </div>
         </li>
 
+        <!-- Search for small screens -->
         <li class="search d-lg-none d-flex">
           <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
         </li>
+
+        <!-- Theme toggle and fullscreen -->
         <li><a class="dark-mode" href="javascript:void(0)"><i class="fas fa-moon"></i></a></li>
         <li><a class="full-screen" href="javascript:void(0)"><i class="fas fa-expand"></i></a></li>
 
@@ -46,13 +49,18 @@
         <li class="profile-nav custom-dropdown">
           <div class="user-wrap">
             <div class="user-img">
-             <img class="img-70 rounded-circle border border-2 shadow-sm" src="{{ Auth::user()->photo }}" alt="User Photo">
+              <img
+                class="img-70 rounded-circle border border-2 shadow-sm"
+                src="{{ Auth::user()->photo }}"
+                alt="NA"
+              style="object-fit: cover; width: 40px; height: 40px;" />
             </div>
             <div class="user-content">
               <h6>{{ Auth::user()->first_name ?? 'User' }}</h6>
               <p class="mb-0">{{ Auth::user()->role ?? 'Role' }}<i class="fas fa-chevron-down"></i></p>
             </div>
           </div>
+
           <div class="custom-menu overflow-hidden">
             <ul class="profile-body">
               <li class="d-flex">

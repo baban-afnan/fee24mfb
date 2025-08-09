@@ -37,13 +37,18 @@
             <div class="col-12 p-0">
                 <div class="login-card login-dark">
                     <div>
-                        <div class="text-center">
-                            <a class="logo" href="#"><img class="img-fluid for-light m-auto" src="{{ asset('assets/images/logo/logo.png') }}" alt="logo"></a>
-                        </div>
+                        
                         <div class="login-main">
                             <form method="POST" action="{{ route('password.confirm') }}" class="theme-form">
                                 @csrf
-                                 <img class="for-dark" src="../assets/images/logo/logo-dark.png" alt="logo" style="max-width: 50px; height: auto;">
+                                 
+
+                                    <!-- Logo -->
+                                  <div class="text-center mb-3">
+                                <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Logo" style="max-width: 40px;">
+                                </div>
+
+
                                 <h2 class="text-center">Confirm Password</h2>
                                 <p class="text-center mb-4">
                                     This is a secure area. Please confirm your password before continuing.
