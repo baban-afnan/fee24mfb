@@ -17,7 +17,7 @@ class NinValidationController extends Controller
     {
         $user = auth()->user();
         $query = NinValidation::with(['modificationField', 'transaction'])
-                    ->where('user_id', $user->id);
+            ->where('user_id', $user->id);
 
         if ($request->filled('search')) {
             $query->where('nin', 'like', '%' . $request->search . '%');
@@ -28,14 +28,14 @@ class NinValidationController extends Controller
         }
 
         $crmSubmissions = $query->orderByDesc('submission_date')
-                            ->paginate(3)
-                            ->withQueryString();
+            ->paginate(3)
+            ->withQueryString();
 
         $ninService = Service::where('name', 'Validation')
-                        ->where('is_active', true)
-                        ->first();
+            ->where('is_active', true)
+            ->first();
 
-        $modificationFields = $ninService 
+        $modificationFields = $ninService
             ? $ninService->modificationFields()
                 ->where('is_active', true)
                 ->get()
@@ -51,14 +51,14 @@ class NinValidationController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         $validated = $request->validate([
             'modification_field_id' => 'required|exists:modification_fields,id',
             'nin' => 'required|string|size:11|regex:/^[0-9]{11}$/',
         ]);
 
         $modificationField = ModificationField::with('service')
-                            ->findOrFail($validated['modification_field_id']);
+            ->findOrFail($validated['modification_field_id']);
 
         $servicePrice = $modificationField->getPriceForUserType($user->role);
 
@@ -81,7 +81,7 @@ class NinValidationController extends Controller
         if ($wallet->wallet_balance < $servicePrice) {
             return back()->with([
                 'status' => 'error',
-                'message' => 'Insufficient wallet balance. You need NGN ' . 
+                'message' => 'Insufficient wallet balance. You need NGN ' .
                     number_format($servicePrice - $wallet->wallet_balance, 2) . ' more.'
             ])->withInput();
         }
@@ -90,7 +90,7 @@ class NinValidationController extends Controller
 
         try {
             // Generate a unique reference
-            $transactionRef = 'VAL-' . time() % 1000000000 . '-' . mt_rand(100, 999);
+            $transactionRef = 'VAL-' . (time() % 1000000000) . '-' . mt_rand(100, 999);
 
             // Create transaction record
             $transaction = Transaction::create([
@@ -102,6 +102,7 @@ class NinValidationController extends Controller
                 'status' => 'completed',
                 'metadata' => [
                     'service' => 'NIN',
+                    'service_name' => $modificationField->service->name ?? null,
                     'modification_field' => $modificationField->field_name,
                     'field_code' => $modificationField->field_code,
                     'nin' => $validated['nin'],
@@ -119,6 +120,8 @@ class NinValidationController extends Controller
                 'user_id' => $user->id,
                 'modification_field_id' => $modificationField->id,
                 'service_id' => $modificationField->service_id,
+                'service_name' => $modificationField->service->name ?? null,
+                'modification_field_name' => $modificationField->field_name,
                 'nin' => $validated['nin'],
                 'transaction_id' => $transaction->id,
                 'submission_date' => now(),
@@ -132,14 +135,14 @@ class NinValidationController extends Controller
 
             return redirect()->route('validation')->with([
                 'status' => 'success',
-                'message' => 'NIN Modification Submitted Successfully. Reference: ' . $transactionRef . 
-                             '. Charged: NGN ' . number_format($servicePrice, 2),
+                'message' => 'NIN Modification Submitted Successfully. Reference: ' . $transactionRef .
+                    '. Charged: NGN ' . number_format($servicePrice, 2),
             ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            
+
             return back()->with([
                 'status' => 'error',
                 'message' => 'Submission failed: ' . $e->getMessage()
@@ -155,7 +158,7 @@ class NinValidationController extends Controller
 
         $user = Auth::user();
         $field = ModificationField::findOrFail($request->field_id);
-        
+
         return response()->json([
             'success' => true,
             'price' => $field->getPriceForUserType($user->role),
@@ -188,7 +191,7 @@ class NinValidationController extends Controller
                 'field_name' => $submission->modificationField->field_name,
                 'field_description' => $submission->modificationField->description
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

@@ -11,8 +11,10 @@ class NinValidation extends Model
     protected $fillable = [
         'reference',
         'user_id',
-        'modification_field_id',
         'service_id',
+        'service_name', 
+        'modification_field_id',
+        'modification_field_name',
         'nin',
         'transaction_id',
         'submission_date',

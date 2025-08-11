@@ -8,18 +8,20 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('nin_validation', function (Blueprint $table) {
-          $table->id();
-          $table->string('reference')->unique();
-          $table->foreignId('user_id')->constrained();
-          $table->foreignId('modification_field_id')->constrained('modification_fields');
-          $table->foreignId('service_id')->constrained('services');
-          $table->string('nin', 11);
-          $table->foreignId('transaction_id')->constrained();
-          $table->dateTime('submission_date');
-          $table->enum('status', ['pending', 'processing', 'resolved', 'rejected', 'query', 'remark'])->default('pending');
-          $table->text('comment')->nullable();
-          $table->timestamps();
-});
+            $table->id();
+            $table->string('reference')->unique();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('modification_field_id')->constrained('modification_fields')->cascadeOnDelete();
+            $table->foreignId('service_id')->constrained('services')->cascadeOnDelete();
+            $table->string('service_name')->nullable();
+            $table->string('modification_field_name')->nullable();
+            $table->string('nin', 11);
+            $table->foreignId('transaction_id')->constrained()->cascadeOnDelete();
+            $table->dateTime('submission_date');
+            $table->enum('status', ['pending', 'processing', 'resolved', 'rejected', 'query', 'remark'])->default('pending');
+            $table->text('comment')->nullable();
+            $table->timestamps();
+        });
     }
 
     public function down(): void
