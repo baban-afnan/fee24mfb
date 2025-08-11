@@ -17,7 +17,7 @@ class NinModificationController extends Controller
     {
         $user = auth()->user();
         $query = NinModification::with(['modificationField', 'transaction'])
-                    ->where('user_id', $user->id);
+            ->where('user_id', $user->id);
 
         if ($request->filled('search')) {
             $query->where('nin', 'like', '%' . $request->search . '%');
@@ -28,21 +28,18 @@ class NinModificationController extends Controller
         }
 
         $crmSubmissions = $query->orderByDesc('submission_date')
-                            ->paginate(3)
-                            ->withQueryString();
+            ->paginate(3)
+            ->withQueryString();
 
         $ninService = Service::where('name', 'NIN')
-                        ->where('is_active', true)
-                        ->first();
+            ->where('is_active', true)
+            ->first();
 
-                      
-
-        $modificationFields = $ninService 
+        $modificationFields = $ninService
             ? $ninService->modificationFields()
                 ->where('is_active', true)
                 ->get()
             : collect();
-
 
         return view('nin-modification', [
             'modificationFields' => $modificationFields,
@@ -54,15 +51,24 @@ class NinModificationController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         $validated = $request->validate([
             'modification_field_id' => 'required|exists:modification_fields,id',
             'nin' => 'required|string|size:11|regex:/^[0-9]{11}$/',
             'description' => 'required|string|max:500',
         ]);
 
+        // Get modification field with service
         $modificationField = ModificationField::with('service')
-                            ->findOrFail($validated['modification_field_id']);
+            ->findOrFail($validated['modification_field_id']);
+
+        $service = $modificationField->service;
+        if (!$service) {
+            return back()->with([
+                'status' => 'error',
+                'message' => 'Associated service not found for the selected field.'
+            ])->withInput();
+        }
 
         $servicePrice = $modificationField->getPriceForUserType($user->role);
 
@@ -85,7 +91,7 @@ class NinModificationController extends Controller
         if ($wallet->wallet_balance < $servicePrice) {
             return back()->with([
                 'status' => 'error',
-                'message' => 'Insufficient wallet balance. You need NGN ' . 
+                'message' => 'Insufficient wallet balance. You need NGN ' .
                     number_format($servicePrice - $wallet->wallet_balance, 2) . ' more.'
             ])->withInput();
         }
@@ -94,7 +100,7 @@ class NinModificationController extends Controller
 
         try {
             // Generate a unique reference
-            $transactionRef = 'NIN-' . time() % 1000000000 . '-' . mt_rand(100, 999);
+            $transactionRef = 'NIN-' . (time() % 1000000000) . '-' . mt_rand(100, 999);
 
             // Create transaction record
             $transaction = Transaction::create([
@@ -105,7 +111,7 @@ class NinModificationController extends Controller
                 'type' => 'debit',
                 'status' => 'completed',
                 'metadata' => [
-                    'service' => 'NIN',
+                    'service' => $service->name,
                     'modification_field' => $modificationField->field_name,
                     'field_code' => $modificationField->field_code,
                     'nin' => $validated['nin'],
@@ -122,7 +128,9 @@ class NinModificationController extends Controller
                 'reference' => $transactionRef,
                 'user_id' => $user->id,
                 'modification_field_id' => $modificationField->id,
-                'service_id' => $modificationField->service_id,
+                'service_id' => $service->id,
+                'service_name' => $service->name, 
+                'modification_field_name' => $modificationField->field_name, 
                 'nin' => $validated['nin'],
                 'description' => $validated['description'],
                 'transaction_id' => $transaction->id,
@@ -137,14 +145,13 @@ class NinModificationController extends Controller
 
             return redirect()->route('nin-modification')->with([
                 'status' => 'success',
-                'message' => 'NIN Modification Submitted Successfully. Reference: ' . $transactionRef . 
-                             '. Charged: NGN ' . number_format($servicePrice, 2),
+                'message' => 'NIN Modification Submitted Successfully. Reference: ' . $transactionRef .
+                    '. Charged: NGN ' . number_format($servicePrice, 2),
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            
+
             return back()->with([
                 'status' => 'error',
                 'message' => 'Submission failed: ' . $e->getMessage()
@@ -160,7 +167,7 @@ class NinModificationController extends Controller
 
         $user = Auth::user();
         $field = ModificationField::findOrFail($request->field_id);
-        
+
         return response()->json([
             'success' => true,
             'price' => $field->getPriceForUserType($user->role),
@@ -194,7 +201,6 @@ class NinModificationController extends Controller
                 'field_name' => $submission->modificationField->field_name,
                 'field_description' => $submission->modificationField->description
             ]);
-            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

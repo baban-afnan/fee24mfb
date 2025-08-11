@@ -12,6 +12,8 @@ class NinModification extends Model
         'reference',
         'user_id',
         'modification_field_id',
+        'service_name', 
+        'modification_field_name', 
         'service_id',
         'nin',
         'description',

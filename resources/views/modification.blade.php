@@ -107,7 +107,7 @@
                     <div class="card-body">
                         <form class="row g-3" method="GET">
                             <div class="col-md-6">
-                                <input class="form-control" name="search" type="text" placeholder="Search by BVN or BVN" value="{{ request('search') }}">
+                                <input class="form-control" name="search" type="text" placeholder="Search by BVN" value="{{ request('search') }}">
                             </div>
                             <div class="col-md-4">
                                 <select class="form-control" name="status">
@@ -129,8 +129,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Request ID</th>
+                                        <th>Bank</th>
                                         <th>BVN</th>
+                                        <th>Field</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -139,8 +140,9 @@
                                     @forelse ($crmSubmissions as $index => $submission)
                                         <tr>
                                             <td>{{ $loop->iteration + $crmSubmissions->firstItem() - 1 }}</td>
-                                            <td>{{ $submission->reference }}</td>
+                                            <td>{{ $submission->service_name }}</td>
                                             <td>{{ $submission->bvn }}</td>
+                                            <td>{{ $submission->modification_field_id }}</td>
                                             <td>
                                                 <span class="badge bg-{{ match($submission->status) {
                                                     'resolved' => 'success',

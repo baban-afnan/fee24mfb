@@ -127,7 +127,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>NIN</th>
-                                        <th>Field</th>
+                                        <th>Services</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -137,7 +137,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration + $crmSubmissions->firstItem() - 1 }}</td>
                                             <td>{{ $submission->nin }}</td>
-                                            <td>{{ $submission->modification_field_id }}</td>
+                                            <td>{{ $submission->modification_field_name }}</td>
                                             <td>
                                                 <span class="badge bg-{{ match($submission->status) {
                                                     'resolved' => 'success',
