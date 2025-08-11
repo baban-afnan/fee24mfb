@@ -11,19 +11,20 @@ class BvnModification extends Model
    protected $fillable = [
     'reference',
     'user_id',
-    'modification_field_id',
     'service_id',
+    'service_name', 
+    'modification_field_id',
+    'modification_field_name', 
     'bvn',
     'nin',
     'description',
-    'affidavit',
     'affidavit_file',
-    'affidavit_file_url', 
+    'affidavit',
+    'affidavit_file_url',
     'transaction_id',
     'submission_date',
     'status',
     'comment',
-    'performed_by',
 ];
 
 

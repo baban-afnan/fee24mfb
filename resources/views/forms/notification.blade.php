@@ -46,18 +46,26 @@
                                         <div class="card border-0">
                                             <div class="blog-box blog-list row g-0">
                                                 
-                                                <!-- Notification Image -->
-                                                @if($notification->image)
-                                                <div class="col-md-5">
-                                                    <img class="img-fluid w-100 h-100 object-fit-cover" 
-                                                         src="{{ asset('storage/'.$notification->image) }}" 
-                                                         alt="{{ $notification->title }}">
-                                                </div>
-                                                @else
-                                                <div class="col-md-5 bg-light d-flex align-items-center justify-content-center">
-                                                    <i class="bi bi-megaphone text-muted" style="font-size: 3rem;"></i>
-                                                </div>
-                                                @endif
+                                               <!-- Notification Image -->
+                                   @if($notification->image)
+                       @php
+                          $imageUrl = Str::startsWith($notification->image, ['http://', 'https://'])
+            ? $notification->image
+            : url('storage/' . ltrim($notification->image, '/'));
+    @endphp
+    <div class="col-md-5">
+        <a href="{{ $imageUrl }}" target="_blank">
+            <img class="img-fluid w-100 h-100 object-fit-cover"
+                 src="{{ $imageUrl }}"
+                 alt="{{ $notification->title }}">
+        </a>
+    </div>
+@else
+    <div class="col-md-5 bg-light d-flex align-items-center justify-content-center">
+        <i class="bi bi-megaphone text-muted" style="font-size: 3rem;"></i>
+    </div>
+@endif
+
 
                                                 <!-- Notification Details -->
                                                 <div class="col-md-7">

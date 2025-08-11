@@ -8,7 +8,6 @@ use App\Models\BvnModification;
 use App\Models\Transaction;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -63,8 +62,10 @@ class BvnModificationController extends Controller
 
         $role = $user->role ?? 'user';
 
-        // Fetch selected modification field
+        // Fetch selected service & modification field
+        $service = Service::findOrFail($validated['enrolment_bank']);
         $modificationField = ModificationField::findOrFail($validated['modification_field']);
+
         $modificationFee = $modificationField->getPriceForUserType($role);
 
         // Fetch affidavit field
@@ -100,8 +101,7 @@ class BvnModificationController extends Controller
             $wallet->decrement('wallet_balance', $totalAmount);
 
             $transactionRef = 'MOD-' . time() . '-' . mt_rand(100, 999);
-
-            $performedBy = auth()->check() ? auth()->user()->first_name . ' ' . auth()->user()->last_name : 'System';
+            $performedBy = $user->first_name . ' ' . $user->last_name;
 
             $transaction = Transaction::create([
                 'transaction_ref' => $transactionRef,
@@ -112,7 +112,7 @@ class BvnModificationController extends Controller
                 'status'          => 'completed',
                 'performed_by'    => $performedBy, 
                 'metadata'        => [
-                    'service' => 'BVN',
+                    'service' => $service->name,
                     'modification_field' => $modificationField->field_name,
                     'field_code' => $modificationField->field_code,
                     'bvn' => $validated['bvn'],
@@ -125,22 +125,24 @@ class BvnModificationController extends Controller
                 ],
             ]);
 
-            // Save BVN modification
+            // Save BVN modification with both IDs & names
             BvnModification::create([
-                'reference'             => $transactionRef,
-                'user_id'               => $user->id,
-                'modification_field_id' => $modificationField->id,
-                'service_id'            => $validated['enrolment_bank'],
-                'bvn'                   => $validated['bvn'],
-                'nin'                   => $validated['nin'],
-                'description'           => $validated['description'],
-                'affidavit_file'        => $fileName,
-                'affidavit'             => $validated['affidavit'],
-                'affidavit_file_url'    => $fileName ? asset('uploads/affidavits/' . $fileName) : null,
-                'transaction_id'        => $transaction->id,
-                'submission_date'       => now(),
-                'status'                => 'pending',
-                'comment'               => null,
+                'reference'                 => $transactionRef,
+                'user_id'                   => $user->id,
+                'service_id'                => $service->id,
+                'service_name'              => $service->name, 
+                'modification_field_id'     => $modificationField->id,
+                'modification_field_name'   => $modificationField->field_name, 
+                'bvn'                       => $validated['bvn'],
+                'nin'                       => $validated['nin'],
+                'description'               => $validated['description'],
+                'affidavit_file'            => $fileName,
+                'affidavit'                 => $validated['affidavit'],
+                'affidavit_file_url'        => $fileName ? asset('uploads/affidavits/' . $fileName) : null,
+                'transaction_id'            => $transaction->id,
+                'submission_date'           => now(),
+                'status'                    => 'pending',
+                'comment'                   => null,
             ]);
 
             DB::commit();
