@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\NinServiceController;
 use App\Http\Controllers\CRMController;
 use App\Http\Controllers\NinModificationController;
 use App\Http\Controllers\NinValidationController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\BvnModificationController;
 use App\Http\Controllers\PhoneSearchController;
 use App\Http\Controllers\NinipeController;
 use App\Http\Controllers\PaymentWebhookController;
-use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\NINverificationController;
 
 
@@ -44,18 +42,17 @@ use App\Http\Controllers\NINverificationController;
 
     // Wallet Route
     Route::get('/wallet', [WalletController::class, 'index'])->name('wallet');
-
     Route::post('/virtual/account/create', [WalletController::class, 'createWallet'])->name('virtual.account.create');
 
-    // BVN Services Route (only controller, remove duplicated closure route)
+    //  Services Route 
     Route::get('/bvn-services', [ServiceController::class, 'bvnServices'])->name('bvn.services');
+    Route::get('/vip-services', [ServiceController::class, 'vipServices'])->name('vip.services');
+    Route::get('/nin-services', [ServiceController::class, 'ninServices'])->name('nin.services');
+    Route::get('/verification-services', [ServiceController::class, 'verificationServices']) ->name('verification.services');
+    
 
-    // NIN Verification Route (only controller, remove duplicated closure route)
-    Route::get('/verification-services', [VerificationController::class, 'verificationServices']) ->name('verification.services');
 
 
-      // NIN Services Route (only controller, remove duplicated closure route)
-    Route::get('/nin-services', [NinServiceController::class, 'ninServices'])->name('nin.services');
 
     // CRM Routes
     Route::get('/bvn-crm', [CRMController::class, 'index'])->name('bvn-crm');

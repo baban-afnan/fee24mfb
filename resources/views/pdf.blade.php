@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Transaction Statement - Fee23MFB</title>
+    <title>Transaction Statement - Fee24MFB</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -87,7 +87,7 @@
 
     <div class="header">
         <img src="{{ public_path('assets/images/logo/logo.png') }}" class="logo" alt="Fee23MFB Logo">
-        <div class="company-name">Fee23 Microfinance Bank</div>
+        <div class="company-name">Fee24 Microfinance Bank</div>
         <div class="statement-title">Transaction Statement</div>
     </div>
 

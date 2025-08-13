@@ -61,7 +61,7 @@
         </a>
       </li>
       <li class="sidebar-list">
-        <a class="sidebar-link" href="send-vnin.php">
+        <a class="sidebar-link" href="{{ route('vip.services') }}">
           <i class="fas fa-paper-plane fa-lg sidebar-icon"></i>
           <h6 class="sidebar-text f-w-600">VIP Services</h6>
         </a>

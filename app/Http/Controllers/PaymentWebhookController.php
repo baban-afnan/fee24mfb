@@ -133,7 +133,7 @@ class PaymentWebhookController extends Controller
         $wallet = Wallet::where('user_id', $userId)->first();
         if ($wallet) {
             $wallet->update([
-                'wallet_balance' => $wallet->balance + $amountPaid,
+                'wallet_balance' => $wallet->wallet_balance + $amountPaid,
                 'deposit' => $wallet->deposit + $amountPaid,
             ]);
         } else {

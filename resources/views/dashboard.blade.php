@@ -89,7 +89,7 @@
 
                             <!-- VIP Services -->
                             <div class="col-10 col-xxl-2 col-lg-4 col-md-6 icons-item">
-                                <a href="bvn.php" class="d-block text-center text-decoration-none">
+                                <a href="{{ route('vip.services') }}" class="d-block text-center text-decoration-none">
                                     <img src="../assets/images/apps/bvnlogo.png" alt="VIP Services" class="mb-2" style="width:40px;height:40px;object-fit:contain;">
                                     <h5 class="mt-0">VIP Services</h5>
                                 </a>
