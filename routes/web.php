@@ -17,6 +17,9 @@ use App\Http\Controllers\PhoneSearchController;
 use App\Http\Controllers\NinipeController;
 use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\NINverificationController;
+use App\Http\Controllers\MigrationFormController;
+use App\Http\Controllers\VIPModificationController;
+use App\Http\Controllers\AgentEnrollmentController;
 
 
 
@@ -47,6 +50,7 @@ use App\Http\Controllers\NINverificationController;
     //  Services Route 
     Route::get('/bvn-services', [ServiceController::class, 'bvnServices'])->name('bvn.services');
     Route::get('/vip-services', [ServiceController::class, 'vipServices'])->name('vip.services');
+    Route::post('/migration-form', [MigrationFormController::class, 'store'])->name('migration-form.store');
     Route::get('/nin-services', [ServiceController::class, 'ninServices'])->name('nin.services');
     Route::get('/verification-services', [ServiceController::class, 'verificationServices']) ->name('verification.services');
     
@@ -113,11 +117,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/bvn', [BvnUserController::class, 'store'])->name('bvn.store');
 });
 
-
+// BVN MODIFICATION 
 Route::middleware(['auth'])->group(function () {
     Route::get('/modification-fields/{service_id}', [App\Http\Controllers\BvnModificationController::class, 'getModificationFields']);
     Route::get('/modification', [BvnModificationController::class, 'index'])->name('modification');
     Route::post('/modification', [BvnModificationController::class, 'store'])->name('modification.store');
+});
+
+
+// BVN MODIFICATION VIP
+Route::middleware(['auth'])->group(function () {
+    Route::get('/modification-fields/{service_id}', [App\Http\Controllers\VIPModificationController::class, 'getModificationFields']);
+    Route::get('/vip-modification', [VIPModificationController::class, 'index'])->name('vip-modification');
+    Route::post('/vip-modification', [VIPModificationController::class, 'store'])->name('vip-modification.store');
 });
 
 
@@ -149,6 +161,10 @@ Route::middleware(['auth'])->group(function () {
     })->name('support');
     //End Whatsapp API Support Routes ------------------------------------------------------------------------------------------
 
+     //agent bvn report
+      Route::get('/agent-enrollments', [AgentEnrollmentController::class, 'index'])->name('enrollments.index');
+      Route::get('/agent-enrollments/data', [AgentEnrollmentController::class, 'getEnrollments'])->name('enrollments.data');
+      Route::get('/agent-enrollments/preview/{id}', [AgentEnrollmentController::class, 'preview'])->name('enrollments.preview');
 
 
 

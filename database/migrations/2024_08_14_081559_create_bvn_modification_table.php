@@ -13,6 +13,9 @@ return new class extends Migration {
           $table->foreignId('user_id')->constrained();
           $table->foreignId('modification_field_id')->constrained('modification_fields');
           $table->foreignId('service_id')->constrained('services');
+          $table->foreignId('modification_field_name')->constrained('modification_fields');
+          $table->foreignId('service_name')->constrained('services');
+          $table->string('bank')->nullable();
           $table->string('bvn', 50);
           $table->string('nin', 50);
           $table->string('description', 150);
