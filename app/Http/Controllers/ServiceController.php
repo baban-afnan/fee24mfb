@@ -46,4 +46,9 @@ class ServiceController extends Controller
     {
         return view('verification-services');
     }
+
+     public function supportServices()
+    {
+        return view('support-services');
+    }
 }

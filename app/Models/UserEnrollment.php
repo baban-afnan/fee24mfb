@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserEnrollment extends Model
 {
-    protected $connection = 'zepa_mysql';
     protected $table = 'user_enrollments';
 
     protected $fillable = [

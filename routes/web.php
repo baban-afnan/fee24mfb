@@ -53,6 +53,8 @@ use App\Http\Controllers\AgentEnrollmentController;
     Route::post('/migration-form', [MigrationFormController::class, 'store'])->name('migration-form.store');
     Route::get('/nin-services', [ServiceController::class, 'ninServices'])->name('nin.services');
     Route::get('/verification-services', [ServiceController::class, 'verificationServices']) ->name('verification.services');
+    Route::get('/support-services', [ServiceController::class, 'supportServices']) ->name('support.services');
+    
     
 
 
